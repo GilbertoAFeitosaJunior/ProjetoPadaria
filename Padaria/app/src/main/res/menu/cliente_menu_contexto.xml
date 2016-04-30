@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_item_fecharr"
+        android:title="Fechar" />
+    <item
+        android:id="@+id/menu_item_excluir"
+        android:title="Excluir" />
+    <item
+        android:id="@+id/menu_item_editar"
+        android:title="Editar" />
+</menu>

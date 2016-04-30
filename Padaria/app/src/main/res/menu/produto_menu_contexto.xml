@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_item_produto_fechar"
+        android:title="Fechar" />
+    <item
+        android:id="@+id/menu_item_produto_exibirDetalhes"
+        android:title="Exibir Detalhes do Estoque" />
+    <item
+        android:id="@+id/menu_item_produto_excluir"
+        android:title="Excluir Produto" />
+    <item
+        android:id="@+id/menu_item_produto_acrescentar"
+        android:title="Acrescentar Saldo" />
+    <item
+        android:id="@+id/menu_item_produto_editar"
+        android:title="Editar Produto" />
+</menu>
