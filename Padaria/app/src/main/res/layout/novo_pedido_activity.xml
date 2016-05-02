@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#eedc82"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#cd950c">
+
+        <ImageView
+            android:layout_width="100px"
+            android:layout_height="100px"
+            android:layout_marginLeft="10px"
+            android:background="@drawable/logomarca" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="100px"
+            android:paddingTop="20px"
+            android:text="Novo Pedido"
+            android:textColor="#000000"
+            android:textSize="50px"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/voltar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="90px"
+            android:layout_marginTop="10px"
+            android:background="@drawable/voltar"
+            android:onClick="menuPedido" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:onClick="SalvarPedido"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5px"
+            android:text="Finalizar Compra" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/codCliente"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Cód. do Cliente"
+            android:inputType="numberDecimal"
+            android:paddingLeft="20px"
+            android:textColor="#000000" />
+
+        <Button
+            android:id="@+id/bntBuscarCliente"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="Buscar"
+            android:text="Buscar Cliente" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/txtCliente"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10px"
+            android:text="SEM CLIENTE"
+            android:textColor="#000000"
+            android:textSize="30px"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/addProduto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Cód. do Produto"
+            android:inputType="numberDecimal"
+            android:paddingLeft="20px"
+            android:textColor="#000000" />
+
+        <Button
+            android:id="@+id/bntBuscarProduto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="Buscar"
+            android:text="Buscar Produto" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textNomeProduto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10px"
+            android:text="SEM CLIENTE"
+            android:textColor="#000000"
+            android:textSize="30px"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textDescProduto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10px"
+            android:text="SEM DESCRIÇÃO"
+            android:textColor="#000000"
+            android:textSize="20px" />
+
+        <TextView
+            android:id="@+id/textPrecoUn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10px"
+            android:text="SEM DESCRIÇÃO"
+            android:textColor="#000000"
+            android:textSize="20px" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+
+        <EditText
+            android:id="@+id/quantEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Quant."
+            android:inputType="number" />
+
+        <Button
+            android:id="@+id/incluir"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="Buscar"
+            android:text="Incluir" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffff"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10px"
+            android:text="Total R$:"
+            android:textColor="#000000"
+            android:textSize="40px" />
+
+        <TextView
+            android:id="@+id/valorCompra"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:paddingLeft="10px"
+            android:text="00.00"
+            android:textColor="#000000"
+            android:textSize="40px"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10px"
+            android:paddingStart="50px"
+            android:text="Quant. Item:"
+            android:textColor="#000000"
+            android:textSize="40px" />
+
+        <TextView
+            android:id="@+id/totalItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10px"
+            android:text="0"
+            android:textColor="#000000"
+            android:textSize="40px"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="10px"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ffffff"
+        android:orientation="vertical">
+        <TextView
+            android:paddingTop="200px"
+            android:layout_gravity="center"
+            android:id="@+id/msg_lista_vazia"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Nenhum Item Adiconado"
+            android:textSize="20dp" />
+        <ListView
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+
+
+    </LinearLayout>
+
+
+
+
+</LinearLayout>
