@@ -86,4 +86,22 @@ public class RepositorioProduto {
         db.close();
     }
 
+
+    public List<String> listaNomesProduto() {
+
+        SQLiteDatabase db = this.padariaOpenHelper.getWritableDatabase();
+
+        Cursor cursor = db.query(PadariaOpenHelper.NAME_TABELA_PRODUTO, new String[]{"id", "nome", "descricao", "quantidade","valor"},
+                null, null, null, null, null);
+
+        List<String> listaDeProdutos = new ArrayList<>();
+
+        while (cursor.moveToNext()) {
+            String nome = cursor.getString(cursor.getColumnIndex("nome"));
+
+            listaDeProdutos.add(nome);
+        }
+        return listaDeProdutos;
+    }
+
 }

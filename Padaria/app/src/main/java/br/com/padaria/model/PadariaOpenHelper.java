@@ -21,6 +21,8 @@ public class PadariaOpenHelper extends SQLiteOpenHelper {
 
         db.execSQL(SQL_TABELA_CLIENTE);
         db.execSQL(SQL_TABELA_PRODUTO);
+        db.execSQL(SQL_TABELA_PEDIDO);
+        db.execSQL(SQL_TABELA_LISTAPEDIDO);
     }
 
     @Override
@@ -47,6 +49,27 @@ public class PadariaOpenHelper extends SQLiteOpenHelper {
                     "quantidade INTEGER, "+
                     "valor REAL " +
                     ");";
+
+
+    public static final String NAME_TABELA_PEDIDO = "tbl_pedido";
+    private static final String SQL_TABELA_PEDIDO =
+            "CREATE TABLE tbl_pedido(" +
+                    "id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
+                    "nomeCliente TEXT," +
+                    "dataPedido TEXT" +
+                    ");";
+
+    public static final String NAME_TABELA_LISTAPEDIDO = "tbl_lista";
+    private static final String SQL_TABELA_LISTAPEDIDO =
+            "CREATE TABLE tbl_lista(" +
+                    "id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
+                    "codigoPedido, " +
+                    "nomeProduto TEXT," +
+                    "quantidade INTEGER," +
+                    "valor REAL " +
+                    ");";
+
+
 
 
 }

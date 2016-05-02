@@ -15,6 +15,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
+            android:layout_marginLeft="10px"
             android:layout_width="100px"
             android:layout_height="100px"
             android:background="@drawable/logomarca"/>
@@ -32,6 +33,7 @@
 
         <ImageView
             android:layout_marginTop="10px"
+            android:layout_marginRight="20px"
             android:onClick="menuProduto"
             android:id="@+id/voltar"
             android:layout_width="wrap_content"
@@ -40,10 +42,9 @@
             />
 
         <ImageView
-            android:layout_marginTop="10px"
+            android:layout_marginTop="5px"
             android:onClick="menuProduto"
             android:id="@+id/addProduto"
-            android:layout_marginLeft="10px"
             android:layout_marginRight="10px"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
