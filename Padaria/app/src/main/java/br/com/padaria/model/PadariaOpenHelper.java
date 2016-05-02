@@ -63,10 +63,11 @@ public class PadariaOpenHelper extends SQLiteOpenHelper {
     private static final String SQL_TABELA_LISTAPEDIDO =
             "CREATE TABLE tbl_lista(" +
                     "id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
-                    "codigoPedido, " +
+                    "codigoPedido INTEGER, " +
                     "nomeProduto TEXT," +
                     "quantidade INTEGER," +
-                    "valor REAL " +
+                    "valor REAL, " +
+                    "data TEXT" +
                     ");";
 
 

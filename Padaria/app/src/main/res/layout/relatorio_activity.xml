@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#eedc82"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#cd950c"
+        android:gravity="left"
+        android:paddingBottom="13px"
+        android:paddingLeft="20px"
+        android:paddingTop="13px">
+
+        <ImageView
+            android:layout_width="100px"
+            android:layout_height="100px"
+            android:background="@drawable/logomarca" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10px"
+            android:paddingRight="10px"
+            android:paddingTop="20px"
+            android:text="Relátorios de Pedidos"
+            android:textColor="#000000"
+            android:textSize="50px"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/voltarPedido"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10px"
+            android:layout_marginTop="10px"
+            android:background="@drawable/voltar"
+            android:onClick="MenuRelatorio" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10px">
+
+        <Button
+            android:id="@+id/localizarPedido"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="MenuRelatorio"
+            android:text="BUSCAR PEDIDO" />
+
+        <Button
+            android:id="@+id/localizarPedidoNome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="MenuRelatorio"
+            android:text="BUSCAR CLIENTE" />
+
+        <Button
+            android:id="@+id/localizarTodos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="MenuRelatorio"
+            android:text="TODOS PEDIDOS" />
+
+    </LinearLayout>
+
+
+    <ListView
+        android:id="@+id/pedidoListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <TextView
+        android:id="@+id/msg_lista_vazia"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:layout_marginTop="300px"
+        android:text="Nenhum pedido."
+        android:textSize="20dp" />
+
+
+</LinearLayout>

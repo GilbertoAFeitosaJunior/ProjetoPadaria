@@ -10,6 +10,19 @@ public class ListaSalvar  {
     private String nomeProduto;
     private Integer quantidade;
     private Double valor;
+    private String data;
+
+    public ListaSalvar() {
+    }
+
+    public ListaSalvar(Integer id, Integer codigoPedido, String nomeProduto, Integer quantidade, Double valor, String data) {
+        this.id = id;
+        this.codigoPedido = codigoPedido;
+        this.nomeProduto = nomeProduto;
+        this.quantidade = quantidade;
+        this.valor = valor;
+        this.data = data;
+    }
 
     public Integer getId() {
         return id;
@@ -49,5 +62,13 @@ public class ListaSalvar  {
 
     public void setValor(Double valor) {
         this.valor = valor;
+    }
+
+    public String getData() {
+        return data;
+    }
+
+    public void setData(String data) {
+        this.data = data;
     }
 }

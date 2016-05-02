@@ -53,6 +53,7 @@ public class NovoPedido extends Activity {
     private String data_completa;
     private Integer codigoPedido = 0;
     private RepositorioListaProdutos repositorioListaProdutos;
+    private Boolean opc = true;
 
 
     @Override
@@ -133,22 +134,42 @@ public class NovoPedido extends Activity {
 
                     if (!addProduto.getText().toString().equals("")) {
                         if (!quantEditText.getText().toString().equals("")) {
+
                             if (Integer.parseInt(quantEditText.getText().toString()) <= produto1.getQuantidade()) {
-                                listaProdutos = new ListaProdutos();
-                                listaProdutos.setProduto(produto1);
-                                listaProdutos.setQuantidade(Integer.parseInt(quantEditText.getText().toString()));
+                                for (ListaProdutos item : produtoLista)
+                                {
+                                    if (item.getProduto().getProdutoID() == produto1.getProdutoID()) {
 
-                                produtoLista.add(listaProdutos);
+                                            Integer n = item.getQuantidade()+Integer.parseInt(quantEditText.getText().toString());
+                                            Integer nn =produto1.getQuantidade();
+
+                                            if(n>=nn){
+                                                Toast.makeText(NovoPedido.this, "Quantidade maior que o estoque", Toast.LENGTH_SHORT).show();
+                                                opc = false;
+                                            }
+
+                                    }
+                                }
+                                if (opc) {
+                                    listaProdutos = new ListaProdutos();
+                                    listaProdutos.setProduto(produto1);
+                                    listaProdutos.setQuantidade(Integer.parseInt(quantEditText.getText().toString()));
+
+                                    produtoLista.add(listaProdutos);
 
 
-                                exibirProdutos(produtoLista);
+                                    exibirProdutos(produtoLista);
 
-                                addProduto.setText("");
-                                textNomeProduto.setText("");
-                                textNomeProduto.setText("");
-                                quantEditText.setText("");
-                                textDescProduto.setText("");
-                                textPrecoUn.setText("");
+                                    addProduto.setText("");
+                                    textNomeProduto.setText("");
+                                    textNomeProduto.setText("");
+                                    quantEditText.setText("");
+                                    textDescProduto.setText("");
+                                    textPrecoUn.setText("");
+                                    opc=true;
+                                }
+
+
                             } else {
                                 Toast.makeText(NovoPedido.this, "Quantidade maior que o estoque", Toast.LENGTH_SHORT).show();
                             }
@@ -159,6 +180,8 @@ public class NovoPedido extends Activity {
                     } else {
                         Toast.makeText(NovoPedido.this, "O Campo Produto É OBRIGATORIO", Toast.LENGTH_SHORT).show();
                     }
+
+                    opc=true;
 
                 } catch (Exception ex) {
                     Toast.makeText(NovoPedido.this, "Campo Quantidade OBRIGATÓDIO", Toast.LENGTH_SHORT).show();
@@ -251,9 +274,10 @@ public class NovoPedido extends Activity {
                 listaSalvar.setNomeProduto(item.getProduto().getNome());
                 listaSalvar.setQuantidade(item.getQuantidade());
                 listaSalvar.setValor(item.getValor());
+                listaSalvar.setData(data_completa);
 
 
-                produto1.setQuantidade(produto1.getQuantidade()-item.getQuantidade());
+                produto1.setQuantidade(produto1.getQuantidade() - item.getQuantidade());
                 repositorioProduto.EditarProduto(produto1);
                 repositorioListaProdutos.SalvarPedido(listaSalvar);
             }

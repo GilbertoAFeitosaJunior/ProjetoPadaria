@@ -68,7 +68,8 @@ public class MainActivity extends Activity {
                 finish();
                 break;
             case R.id.relatorios:
-                Toast.makeText(MainActivity.this, "Relatórios", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(this, RelatorioActivity.class));
+                finish();
                 break;
         }
     }

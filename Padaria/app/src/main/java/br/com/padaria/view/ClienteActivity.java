@@ -83,7 +83,7 @@ public class ClienteActivity extends Activity {
 
 
     }
-//localizar
+//localizar_pedido
     public void searchItem(String textToSearch){
         for (Cliente item: listaDeCliente) {
             if (!item.getNome().toLowerCase().contains(textToSearch.toLowerCase())){

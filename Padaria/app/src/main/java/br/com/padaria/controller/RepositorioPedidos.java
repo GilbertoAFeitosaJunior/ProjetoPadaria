@@ -57,4 +57,56 @@ public class RepositorioPedidos {
         return listaPedidos;
     }
 
+
+    public List<Pedido> buscaPorID(Pedido pedido) {
+
+        SQLiteDatabase db = this.padariaOpenHelper.getWritableDatabase();
+
+        Cursor cursor = db.query(PadariaOpenHelper.NAME_TABELA_PEDIDO, new String[]{"id", "nomeCliente", "dataPedido"},
+                null, null, null, null, null);
+
+        List<Pedido> listaPedidos = new ArrayList<>();
+
+        while (cursor.moveToNext()) {
+
+            Integer id = cursor.getInt(cursor.getColumnIndex("id"));
+            String nomeCliente = cursor.getString(cursor.getColumnIndex("nomeCliente"));
+            String dataPedido = cursor.getString(cursor.getColumnIndex("dataPedido"));
+
+
+            if (id == pedido.getPedidoID()) {
+                Pedido novoPedido = new Pedido(id, nomeCliente, dataPedido);
+                listaPedidos.add(novoPedido);
+            }
+
+        }
+
+        return listaPedidos;
+    }
+
+    public List<Pedido> buscaPorNome(Pedido pedido) {
+        SQLiteDatabase db = this.padariaOpenHelper.getWritableDatabase();
+
+        Cursor cursor = db.query(PadariaOpenHelper.NAME_TABELA_PEDIDO, new String[]{"id", "nomeCliente", "dataPedido"},
+                null, null, null, null, null);
+
+        List<Pedido> listaPedidos = new ArrayList<>();
+
+        while (cursor.moveToNext()) {
+
+            Integer id = cursor.getInt(cursor.getColumnIndex("id"));
+            String nomeCliente = cursor.getString(cursor.getColumnIndex("nomeCliente"));
+            String dataPedido = cursor.getString(cursor.getColumnIndex("dataPedido"));
+
+
+            if (nomeCliente.toLowerCase().equals(pedido.getNomeCliente().toLowerCase())) {
+                Pedido novoPedido = new Pedido(id, nomeCliente, dataPedido);
+                listaPedidos.add(novoPedido);
+            }
+
+        }
+
+        return listaPedidos;
+    }
+
 }

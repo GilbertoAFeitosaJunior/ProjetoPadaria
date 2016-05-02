@@ -84,7 +84,7 @@ public class ProdutoActivity extends Activity {
     }
 
 
-    //localizar
+    //localizar_pedido
     public void searchItem(String textToSearch) {
         for (Produto item : listaDeProdutos) {
             if (!item.getNome().toLowerCase().contains(textToSearch.toLowerCase())) {
