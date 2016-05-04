@@ -2,22 +2,40 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#cd950c"
-    android:gravity="center"
+    android:background="#000000"
     android:orientation="horizontal">
 
+    <LinearLayout
+        android:layout_weight="1"
+        android:layout_width="300px"
+        android:layout_height="300px">
 
-    <ImageView
-        android:onClick="MenuPedido"
-        android:id="@+id/novo_pedido"
-        android:layout_width="200px"
-        android:layout_height="200px"
-        android:background="@drawable/novo_pedido"/>
-p
-    <ImageView
-        android:onClick="MenuPedido"
-        android:id="@+id/relatorios"
-        android:layout_width="200px"
-        android:layout_height="200px"
-        android:background="@drawable/relatorios"/>
+
+        <ImageView
+            android:layout_marginLeft="70px"
+            android:layout_marginTop="40px"
+            android:id="@+id/novo_pedido"
+            android:layout_width="200px"
+            android:layout_height="200px"
+            android:background="@drawable/novo_pedido"
+            android:onClick="MenuPedido" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_weight="1"
+        android:layout_width="300px"
+        android:layout_height="300px">
+
+        <ImageView
+            android:layout_marginTop="40px"
+            android:layout_marginLeft="20px"
+            android:id="@+id/relatorios"
+            android:layout_width="200px"
+            android:layout_height="200px"
+            android:background="@drawable/relatorios"
+            android:onClick="MenuPedido" />
+
+    </LinearLayout>
+
 </LinearLayout>

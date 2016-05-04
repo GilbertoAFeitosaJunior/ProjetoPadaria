@@ -1,9 +1,13 @@
 package br.com.padaria.view;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.ContextMenu;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -11,9 +15,11 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -42,7 +48,6 @@ public class NovoPedido extends Activity {
     private RepositorioProduto repositorioProduto;
     private EditText codCliente, addProduto, quantEditText;
     private TextView txtCliente, textNomeProduto, textDescProduto, valorCompra, textPrecoUn, totalItem;
-    private Integer codigo;
     private RepositorioCliente repositorioCliente;
     private Produto produto1;
     private Cliente cliente;
@@ -54,12 +59,16 @@ public class NovoPedido extends Activity {
     private Integer codigoPedido = 0;
     private RepositorioListaProdutos repositorioListaProdutos;
     private Boolean opc = true;
+    private Integer valida = 0;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.novo_pedido_activity);
+
+        ActionBar bar = getActionBar();
+        bar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#cd950c")));
 
         repositorioProduto = new RepositorioProduto(this);
         repositorioCliente = new RepositorioCliente(this);
@@ -87,6 +96,15 @@ public class NovoPedido extends Activity {
     }
 
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuItem menuVoltar = menu.add(0, 0, 0, "Voltar");
+        menuVoltar.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        menuVoltar.setIcon(R.drawable.voltar);
+        return true;
+    }
+
     public void Buscar(View view) {
         switch (view.getId()) {
             case R.id.bntBuscarCliente:
@@ -94,9 +112,11 @@ public class NovoPedido extends Activity {
                     cliente = BuscarCliente(codCliente.getText().toString());
                     if (cliente != null) {
                         txtCliente.setText(cliente.getNome().toString().toUpperCase());
+                        txtCliente.setTextColor(Color.BLACK);
                     } else {
                         Toast.makeText(NovoPedido.this, "Cliente NÃO CADASTRADO", Toast.LENGTH_SHORT).show();
-                        txtCliente.setText("Cliente NÃO CADASTRADO");
+                        txtCliente.setText("CLIENTE NÃO CADASTRADO");
+                        txtCliente.setTextColor(Color.RED);
                         codCliente.setText("");
                     }
 
@@ -113,18 +133,26 @@ public class NovoPedido extends Activity {
                     if (produto1 != null) {
                         textNomeProduto.setText(produto1.getNome().toString().toUpperCase());
                         textDescProduto.setText(produto1.getDescricao().toString().toUpperCase());
-                        textPrecoUn.setText(produto1.getValor().toString().toUpperCase());
+                        Double teste = produto1.getValor();
+                        DecimalFormat df = new DecimalFormat("0.00");
+
+                        textPrecoUn.setText("R$ " + df.format(teste).toString());
+
+                        textNomeProduto.setTextColor(Color.BLACK);
+                        textDescProduto.setTextColor(Color.BLACK);
+                        textPrecoUn.setTextColor(Color.BLACK);
 
                     } else {
                         Toast.makeText(NovoPedido.this, "Produto NÃO CADASTRADO", Toast.LENGTH_SHORT).show();
-                        textNomeProduto.setText("Prodoto NÃO CADASTRADO");
+                        textNomeProduto.setText("PRODUTO NÃO CADASTRADO");
+                        textNomeProduto.setTextColor(Color.RED);
                         addProduto.setText("");
                         textDescProduto.setText("");
                         textPrecoUn.setText("");
                     }
                 } else {
                     Toast.makeText(NovoPedido.this, "O Campo Produto É OBRIGATORIO", Toast.LENGTH_SHORT).show();
-                    textNomeProduto.setText("O Campo Produto É OBRIGATORIO");
+                    textNomeProduto.setText("O CAMPO PRODUTO É OBRIGATORIO");
                     textNomeProduto.setText("");
                 }
                 break;
@@ -134,57 +162,68 @@ public class NovoPedido extends Activity {
 
                     if (!addProduto.getText().toString().equals("")) {
                         if (!quantEditText.getText().toString().equals("")) {
+                            Integer validacao = Integer.parseInt(quantEditText.getText().toString());
+                            if (!(validacao <= 0)) {
+                                if (Integer.parseInt(quantEditText.getText().toString()) <= produto1.getQuantidade()) {
 
-                            if (Integer.parseInt(quantEditText.getText().toString()) <= produto1.getQuantidade()) {
-                                for (ListaProdutos item : produtoLista)
-                                {
-                                    if (item.getProduto().getProdutoID() == produto1.getProdutoID()) {
+                                    for (ListaProdutos item : produtoLista) {
+                                        if (item.getProduto().getProdutoID() == produto1.getProdutoID()) {
 
-                                            Integer n = item.getQuantidade()+Integer.parseInt(quantEditText.getText().toString());
-                                            Integer nn =produto1.getQuantidade();
-
-                                            if(n>=nn){
-                                                Toast.makeText(NovoPedido.this, "Quantidade maior que o estoque", Toast.LENGTH_SHORT).show();
-                                                opc = false;
+                                            for (ListaProdutos item1 : produtoLista) {
+                                                if (item.getProduto().getProdutoID() == produto1.getProdutoID()) {
+                                                    valida += item.getQuantidade();
+                                                }
                                             }
 
+                                            Integer n = valida + Integer.parseInt(quantEditText.getText().toString());
+                                            Integer nn = produto1.getQuantidade();
+
+                                            if (n > nn) {
+                                                Toast.makeText(NovoPedido.this, "QUANTIDADE MAIOR QUE O ESTOQUE", Toast.LENGTH_SHORT).show();
+                                                opc = false;
+                                                valida = 0;
+                                            }
+                                            valida = 0;
+                                        }
                                     }
+                                    if (opc) {
+                                        listaProdutos = new ListaProdutos();
+                                        listaProdutos.setProduto(produto1);
+                                        listaProdutos.setQuantidade(Integer.parseInt(quantEditText.getText().toString()));
+
+                                        produtoLista.add(listaProdutos);
+
+
+                                        exibirProdutos(produtoLista);
+
+                                        addProduto.setText("");
+                                        textNomeProduto.setText("");
+                                        textNomeProduto.setText("");
+                                        quantEditText.setText("");
+                                        textDescProduto.setText("");
+                                        textPrecoUn.setText("");
+                                        opc = true;
+                                    }
+
+
+                                } else {
+                                    Toast.makeText(NovoPedido.this, "QUANTIDADE MAIOR QUE O ESTOQUE", Toast.LENGTH_SHORT).show();
                                 }
-                                if (opc) {
-                                    listaProdutos = new ListaProdutos();
-                                    listaProdutos.setProduto(produto1);
-                                    listaProdutos.setQuantidade(Integer.parseInt(quantEditText.getText().toString()));
-
-                                    produtoLista.add(listaProdutos);
-
-
-                                    exibirProdutos(produtoLista);
-
-                                    addProduto.setText("");
-                                    textNomeProduto.setText("");
-                                    textNomeProduto.setText("");
-                                    quantEditText.setText("");
-                                    textDescProduto.setText("");
-                                    textPrecoUn.setText("");
-                                    opc=true;
-                                }
-
-
                             } else {
-                                Toast.makeText(NovoPedido.this, "Quantidade maior que o estoque", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(NovoPedido.this, "CAMPO QUANTIDADE DEVER SER > 0", Toast.LENGTH_SHORT).show();
                             }
 
                         } else {
-                            Toast.makeText(NovoPedido.this, "Campo Quantidade OBRIGATÓDIO", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(NovoPedido.this, "CAMPO QUANTIDADE É OBRIGATÓDIO", Toast.LENGTH_SHORT).show();
                         }
                     } else {
-                        Toast.makeText(NovoPedido.this, "O Campo Produto É OBRIGATORIO", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(NovoPedido.this, "CAMPO QUANTIDADE É OBRIGATÓDIO", Toast.LENGTH_SHORT).show();
                     }
 
-                    opc=true;
+                    opc = true;
 
                 } catch (Exception ex) {
-                    Toast.makeText(NovoPedido.this, "Campo Quantidade OBRIGATÓDIO", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(NovoPedido.this, "CAMPO QUANTIDADE É OBRIGATÓDIO", Toast.LENGTH_SHORT).show();
                 }
 
                 break;
@@ -206,7 +245,9 @@ public class NovoPedido extends Activity {
 
         ProdutoPedidoAdapter adapter = new ProdutoPedidoAdapter(this, produtoLista);
         this.listView.setAdapter(adapter);
-        valorCompra.setText(totalCompra.toString());
+        Double teste = totalCompra;
+        DecimalFormat df = new DecimalFormat("0.00");
+        valorCompra.setText(df.format(teste).toString());
         totalItem.setText(itemTotal.toString());
 
     }
@@ -304,17 +345,6 @@ public class NovoPedido extends Activity {
 
     }
 
-    //MENU PRINCIPAL
-    public void menuPedido(View view) {
-        switch (view.getId()) {
-            case R.id.voltar:
-                startActivity(new Intent(this, MainActivity.class));
-                finish();
-                break;
-
-        }
-    }
-
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
@@ -323,12 +353,17 @@ public class NovoPedido extends Activity {
     }
 
     @Override
-    public boolean onContextItemSelected(MenuItem item) {
-
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-
+    public boolean onMenuItemSelected(int featureId, MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = null;
+        if (!item.getTitle().equals("Voltar")) {
+            info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        }
         switch (item.getItemId()) {
 
+            case 0:
+                startActivity(new Intent(this, MainActivity.class));
+                finish();
+                break;
             case R.id.menu_pedido_excluir:
                 produtoLista.remove(info.position);
                 exibirProdutos(produtoLista);
@@ -337,6 +372,8 @@ public class NovoPedido extends Activity {
             default:
                 return false;
         }
+
+        return true;
 
     }
 

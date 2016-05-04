@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 import br.com.padaria.R;
@@ -47,6 +48,7 @@ public class RelatodioDetalhesAdapter extends BaseAdapter {
         View view = layoutInflater.inflate(R.layout.detalhes_pedidos_activity, null);
 
         ListaSalvar lista = listaSalvar.get(position);
+
 
         TextView nomeProdutoDetalhes = (TextView) view.findViewById(R.id.nomeProdutoDetalhes);
         nomeProdutoDetalhes.setText(lista.getNomeProduto());

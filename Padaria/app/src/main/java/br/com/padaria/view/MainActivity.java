@@ -1,14 +1,18 @@
 package br.com.padaria.view;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
+
 import br.com.padaria.R;
 import br.com.padaria.controller.RepositorioProduto;
 ;
@@ -26,6 +30,9 @@ public class MainActivity extends Activity {
         setContentView(R.layout.main_activity);
 
         inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        ActionBar bar = getActionBar();
+        bar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#cd950c")));
     }
 
 
@@ -44,8 +51,6 @@ public class MainActivity extends Activity {
                 break;
         }
     }
-
-
 
 
     public void OpcaoPedito() {

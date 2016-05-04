@@ -1,23 +1,29 @@
 package br.com.padaria.view;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 import br.com.padaria.R;
@@ -49,6 +55,9 @@ public class ProdutoActivity extends Activity {
         setContentView(R.layout.protudo_activity);
         repositorioProduto = new RepositorioProduto(this);
 
+        ActionBar bar = getActionBar();
+        bar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#cd950c")));
+
         inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         produtoListView = (ListView) findViewById(R.id.produtoListView);
@@ -58,31 +67,41 @@ public class ProdutoActivity extends Activity {
 
         registerForContextMenu(produtoListView);
 
-        localizarProduto = (EditText) findViewById(R.id.localizarProduto);
-        localizarProduto.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.toString().equals("")) {
-                    exibirTodosProdutos();
-
-                } else {
-                    searchItem(s.toString());
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        SearchView sv = new SearchView(this);
+        sv.setOnQueryTextListener(new SearcFiltro());
+
+        MenuItem pesquisa = menu.add(0, 0, 0, "Pesquisa");
+        pesquisa.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        pesquisa.setActionView(sv);
+
+        MenuItem menuVoltar = menu.add(0, 1, 1, "Voltar");
+        menuVoltar.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        menuVoltar.setIcon(R.drawable.voltar);
+        return true;
+    }
+
+    protected class SearcFiltro implements SearchView.OnQueryTextListener {
+        @Override
+        public boolean onQueryTextSubmit(String query) {
+            return false;
+        }
+
+        @Override
+        public boolean onQueryTextChange(String newText) {
+            if (newText.toString().equals("")) {
+                exibirTodosProdutos();
+            } else {
+                searchItem(newText.toString());
+            }
+            return false;
+        }
+    }
 
     //localizar_pedido
     public void searchItem(String textToSearch) {
@@ -98,10 +117,6 @@ public class ProdutoActivity extends Activity {
     //MENU PRINCIPAL
     public void menuProduto(View view) {
         switch (view.getId()) {
-            case R.id.voltar:
-                startActivity(new Intent(this, MainActivity.class));
-                finish();
-                break;
             case R.id.addProduto:
                 adicionarProduto();
                 break;
@@ -185,16 +200,19 @@ public class ProdutoActivity extends Activity {
     }
 
     @Override
-    public boolean onContextItemSelected(MenuItem item) {
-
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-
-        produto = (Produto) this.produtoListView.getItemAtPosition(info.position);
+    public boolean onMenuItemSelected(int featureId, MenuItem item) {
+        if (!item.getTitle().equals("Voltar")) {
+            AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+            produto = (Produto) this.produtoListView.getItemAtPosition(info.position);
+        }
 
         switch (item.getItemId()) {
 
+            case 1:
+                startActivity(new Intent(this, MainActivity.class));
+                finish();
+                break;
             case R.id.menu_item_produto_fechar:
-
                 return true;
             case R.id.menu_item_produto_exibirDetalhes:
                 exibirDetalhesProduto(produto);
@@ -214,6 +232,7 @@ public class ProdutoActivity extends Activity {
             default:
                 return false;
         }
+        return true;
     }
 
 
@@ -256,17 +275,20 @@ public class ProdutoActivity extends Activity {
     public void exibirDetalhesProduto(Produto produto) {
         viewDetalhesProduto = inflater.inflate(R.layout.detalhes_produto_activity, null);
 
+
         codigoProdutoContext = (TextView) viewDetalhesProduto.findViewById(R.id.codigoProdutoContext);
         nomeProdutoContext = (TextView) viewDetalhesProduto.findViewById(R.id.nomeProdutoContext);
         descriacaoProdutoContext = (TextView) viewDetalhesProduto.findViewById(R.id.descriacaoProdutoContext);
         quatidadeProdutoContext = (TextView) viewDetalhesProduto.findViewById(R.id.quatidadeProdutoContext);
         valorProdutoContext = (TextView) viewDetalhesProduto.findViewById(R.id.valorProdutoContext);
+        Double teste = produto.getValor();
+        DecimalFormat df = new DecimalFormat("#.00");
 
         codigoProdutoContext.setText(produto.getProdutoID().toString());
         nomeProdutoContext.setText(produto.getNome());
         descriacaoProdutoContext.setText(produto.getDescricao());
         quatidadeProdutoContext.setText(produto.getQuantidade().toString());
-        valorProdutoContext.setText(produto.getValor().toString());
+        valorProdutoContext.setText(df.format(teste).toString());
 
         AlertDialog.Builder dlg = new AlertDialog.Builder(this);
         dlg.setTitle("DETALHES DO PRODUTO");

@@ -2,21 +2,55 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingLeft="10px">
+    android:background="#eedc82"
+    android:orientation="horizontal"
+    android:paddingLeft="10px"
+    android:weightSum="1">
 
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_width="191dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.89">
 
         <TextView
+            android:layout_marginTop="20px"
+            android:layout_marginBottom="20px"
             android:id="@+id/nomeProdutoAdapater"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="10px"
-            android:paddingTop="20px"
-            android:text="Gilberto alva Feitosa Junior"
+            android:text="Café"
+            android:textColor="#000000"
+            android:textSize="35px" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="57dp"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_marginTop="20px"
+            android:layout_marginBottom="20px"
+            android:id="@+id/quantidadeProdutoAdapater"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10px"
+            android:text="50"
+            android:textColor="#000000"
+            android:textSize="35px" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_marginTop="20px"
+            android:layout_marginBottom="20px"
+            android:id="@+id/descricao"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=" Un."
             android:textColor="#000000"
             android:textSize="35px" />
     </LinearLayout>

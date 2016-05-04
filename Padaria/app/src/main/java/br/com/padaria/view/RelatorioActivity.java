@@ -1,21 +1,27 @@
 package br.com.padaria.view;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,6 +61,10 @@ public class RelatorioActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.relatorio_activity);
+
+        ActionBar bar = getActionBar();
+        bar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#cd950c")));
+
         repositorioPedidos = new RepositorioPedidos(this);
 
         inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -71,12 +81,29 @@ public class RelatorioActivity extends Activity {
     }
 
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuItem menuVoltar = menu.add(0, 1, 1, "Voltar");
+        menuVoltar.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        menuVoltar.setIcon(R.drawable.voltar);
+
+        MenuItem pesquisarID = menu.add(0, 2, 2, "Pesquisar por Nº Pedido");
+        pesquisarID.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+
+        MenuItem pesquisarNome = menu.add(0, 3, 3, "Pesquisar por Nome Cliente");
+        pesquisarID.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+
+        MenuItem mostarTodos = menu.add(0, 4, 4, "Exibir Todos Pedidos");
+        mostarTodos.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+
+        return true;
+    }
+
+
     public void SearchPedido() {
         viewLocalizar = inflater.inflate(R.layout.pedido_localizar, null);
-
         localizarPedidoNumero = (EditText) viewLocalizar.findViewById(R.id.localizarPedidoNumero);
-
-
         AlertDialog.Builder dlg = new AlertDialog.Builder(this);
         dlg.setTitle("LOCALIZAR");
         dlg.setView(viewLocalizar);
@@ -142,25 +169,6 @@ public class RelatorioActivity extends Activity {
         dlg.show();
     }
 
-    //MENU PRINCIPAL
-    public void MenuRelatorio(View view) {
-        switch (view.getId()) {
-            case R.id.voltarPedido:
-                startActivity(new Intent(this, MainActivity.class));
-                finish();
-                break;
-            case R.id.localizarPedido:
-                SearchPedido();
-                break;
-            case R.id.localizarPedidoNome:
-                SearchPedidoNome();
-                break;
-            case R.id.localizarTodos:
-                opc = 0;
-                ExibirTodosPedidos(opc);
-                break;
-        }
-    }
 
 
     //lista de pedids
@@ -182,7 +190,6 @@ public class RelatorioActivity extends Activity {
             listaPedidos.clear();
             pedidoAdapter = new PedidoAdapter(this, listaPedidos);
             this.pedidoListView.setAdapter(pedidoAdapter);
-            Toast.makeText(RelatorioActivity.this, "asdfasfasfasfasfs", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -195,23 +202,36 @@ public class RelatorioActivity extends Activity {
     }
 
     @Override
-    public boolean onContextItemSelected(MenuItem item) {
-
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-
-        pedido = (Pedido) this.pedidoListView.getItemAtPosition(info.position);
-
+    public boolean onMenuItemSelected(int featureId, MenuItem item) {
+        if (!(item.getTitle().equals("Voltar")|| item.getTitle().equals("Pesquisar por Nº Pedido")||item.getTitle().equals("Pesquisar por Nome Cliente")|| item.getTitle().equals("Exibir Todos Pedidos"))) {
+            AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+            pedido = (Pedido) this.pedidoListView.getItemAtPosition(info.position);
+        }
         switch (item.getItemId()) {
-
+            case 1:
+                startActivity(new Intent(this, MainActivity.class));
+                finish();
+                break;
+            case 2:
+                SearchPedido();
+                break;
+            case 3:
+                SearchPedidoNome();
+                break;
+            case 4:
+                opc = 0;
+                ExibirTodosPedidos(opc);
+                break;
             case R.id.exibirFechar:
                 return true;
             case R.id.exibirDetalhes:
                 exibirDetalhesPedidos(pedido);
-                Toast.makeText(RelatorioActivity.this, pedido.getNomeCliente(), Toast.LENGTH_SHORT).show();
                 return true;
             default:
                 return false;
         }
+
+        return true;
     }
 
 
@@ -230,11 +250,13 @@ public class RelatorioActivity extends Activity {
         listaSalvar = repositorioListaProdutos.exibirDetalhesPedido(pedido);
 
         Double total = 0.0;
-        for (ListaSalvar item: listaSalvar) {
-            total +=item.getValor();
+        for (ListaSalvar item : listaSalvar) {
+            total += item.getValor();
         }
 
-        valorPedidoDetalhes.setText(total.toString());
+        Double teste = total;
+        DecimalFormat df = new DecimalFormat("#.00");
+        valorPedidoDetalhes.setText(df.format(teste).toString());
 
         numeroPedidoDetalhes.setText(pedido.getPedidoID().toString());
         clientePedidoDetalhes.setText(pedido.getNomeCliente());

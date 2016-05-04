@@ -1,22 +1,30 @@
 package br.com.padaria.view;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
+
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioGroup;
+import android.widget.SearchView;
 import android.widget.Toast;
+
 import java.util.List;
 
 import br.com.padaria.R;
@@ -38,15 +46,16 @@ public class ClienteActivity extends Activity {
     private RepositorioCliente repositorioCliente;
     private ListView clientListView;
     private Cliente cliente;
-
-    private EditText localizar;
-
     List<Cliente> listaDeCliente;
     ClienteAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.cliente_activity);
+        ActionBar bar = getActionBar();
+        bar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#cd950c")));
 
         repositorioCliente = new RepositorioCliente(this);
 
@@ -54,39 +63,52 @@ public class ClienteActivity extends Activity {
 
         clientListView = (ListView) findViewById(R.id.clientListView);
         clientListView.setEmptyView(findViewById(R.id.msg_lista_vazia));
+
         registerForContextMenu(clientListView);
 
 
-        localizar = (EditText) findViewById(R.id.localizar);
-        localizar.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.toString().equals("")) {
-                    exibirTodosClientes();
-
-                } else {
-                    searchItem(s.toString());
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-            exibirTodosClientes();
+        exibirTodosClientes();
 
 
     }
-//localizar_pedido
-    public void searchItem(String textToSearch){
-        for (Cliente item: listaDeCliente) {
-            if (!item.getNome().toLowerCase().contains(textToSearch.toLowerCase())){
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        SearchView sv = new SearchView(this);
+        sv.setOnQueryTextListener(new SearcFiltro());
+
+        MenuItem pesquisa = menu.add(0, 0, 0, "Pesquisa");
+        pesquisa.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        pesquisa.setActionView(sv);
+
+        MenuItem menuVoltar = menu.add(0, 1, 1, "Voltar");
+        menuVoltar.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        menuVoltar.setIcon(R.drawable.voltar);
+        return true;
+    }
+
+    protected class SearcFiltro implements SearchView.OnQueryTextListener {
+        @Override
+        public boolean onQueryTextSubmit(String query) {
+            return false;
+        }
+
+        @Override
+        public boolean onQueryTextChange(String newText) {
+            if (newText.toString().equals("")) {
+                exibirTodosClientes();
+            } else {
+                searchItem(newText.toString());
+            }
+            return false;
+        }
+    }
+
+    //localizar_pedido
+    public void searchItem(String textToSearch) {
+        for (Cliente item : listaDeCliente) {
+            if (!item.getNome().toLowerCase().contains(textToSearch.toLowerCase())) {
                 listaDeCliente.remove(item);
                 adapter.notifyDataSetChanged();
                 return;
@@ -97,10 +119,6 @@ public class ClienteActivity extends Activity {
     //MENU PRINCIPAL
     public void MenuCliente(View view) {
         switch (view.getId()) {
-            case R.id.voltar:
-                startActivity(new Intent(this, MainActivity.class));
-                finish();
-                break;
             case R.id.addCliente:
                 adicionarCliente();
                 break;
@@ -217,8 +235,8 @@ public class ClienteActivity extends Activity {
         dlg.show();
 
 
-
     }
+
     /*-------------------------------CRUD---------------------------------------------------------------------------*/
     //salvar cliente no banco
     public void Salvar() {
@@ -251,21 +269,24 @@ public class ClienteActivity extends Activity {
     }
 
 
-/*-------------------------------menu de contexto---------------------------------------------------------------------------*/
+    /*-------------------------------menu de contexto---------------------------------------------------------------------------*/
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         getMenuInflater().inflate(R.menu.cliente_menu_contexto, menu);
     }
+
     @Override
-    public boolean onContextItemSelected(MenuItem item) {
-
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-
-        cliente = (Cliente) this.clientListView.getItemAtPosition(info.position);
-
+    public boolean onMenuItemSelected(int featureId, MenuItem item) {
+       if(!item.getTitle().equals("Voltar")){
+           AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+           cliente = (Cliente) this.clientListView.getItemAtPosition(info.position);
+       }
         switch (item.getItemId()) {
-
+            case 1:
+                startActivity(new Intent(this, MainActivity.class));
+                finish();
+                break;
             case R.id.menu_item_fecharr:
                 return true;
             case R.id.menu_item_excluir:
@@ -277,7 +298,10 @@ public class ClienteActivity extends Activity {
                 editarCliente(cliente);
             default:
                 return false;
+
         }
+
+        return true;
     }
 
 }

@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 import br.com.padaria.R;
@@ -53,8 +54,12 @@ public class ProdutoPedidoAdapter extends BaseAdapter {
         TextView nome = (TextView)  view.findViewById(R.id.nomePedidoAdapter);
         nome.setText(produto.getNome());
 
+
+
         TextView valor = (TextView)  view.findViewById(R.id.valorPedidoAdapter);
-        valor.setText(lista.getValor().toString());
+        Double teste = lista.getValor();
+        DecimalFormat df = new DecimalFormat("0.00");
+        valor.setText("R$ "+df.format(teste).toString());
 
         TextView quant = (TextView)  view.findViewById(R.id.quantPedidoAdapter);
         quant.setText(quantidade.toString());
